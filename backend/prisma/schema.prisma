@@ -1,0 +1,159 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String           @id @default(uuid())
+  name               String
+  email              String           @unique
+  passwordHash       String
+  isVerified         Boolean          @default(false)
+  roleId             Int
+  role               Role             @relation(fields: [roleId], references: [id])
+  interests          String[] // e.g. ["cricket", "gaming"]
+  customInstructions String?          @db.Text
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  requests           ConceptRequest[]
+  attempts           QuizAttempt[]
+  sessions           Session[]
+  weakAreas          WeakArea[]
+  conversations      Conversation[]
+
+  @@map("users")
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+
+  @@map("roles")
+}
+
+model Concept {
+  id            String           @id @default(uuid())
+  name          String           @unique // e.g. "Binary Search"
+  description   String?
+  prerequisites String[]
+  createdAt     DateTime         @default(now())
+  requests      ConceptRequest[]
+  weakAreas     WeakArea[]
+
+  @@map("concepts")
+}
+
+model ConceptRequest {
+  id                   String         @id @default(uuid())
+  userId               String
+  user                 User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conceptId            String
+  concept              Concept        @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  analogyInterest      String // e.g. "cricket"
+  analogyContent       String         @db.Text
+  d3VisualizationJson  Json // Stores the configuration/JSON for D3.js rendering
+  smartNotes           String         @db.Text
+  roadmapResourceLinks Json // List of recommended resources
+  createdAt            DateTime       @default(now())
+  questions            QuizQuestion[]
+  attempts             QuizAttempt[]
+
+  @@map("concept_requests")
+}
+
+model QuizQuestion {
+  id               String         @id @default(uuid())
+  conceptRequestId String
+  conceptRequest   ConceptRequest @relation(fields: [conceptRequestId], references: [id], onDelete: Cascade)
+  questionText     String         @db.Text
+  options          Json // e.g. {"A": "Option 1", "B": "Option 2"}
+  correctOption    String
+  explanation      String         @db.Text
+
+  @@map("quiz_questions")
+}
+
+model QuizAttempt {
+  id               String         @id @default(uuid())
+  userId           String
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conceptRequestId String
+  conceptRequest   ConceptRequest @relation(fields: [conceptRequestId], references: [id], onDelete: Cascade)
+  score            Int // Score percentage (0-100)
+  passed           Boolean
+  createdAt        DateTime       @default(now())
+
+  @@map("quiz_attempts")
+}
+
+model WeakArea {
+  id               Int      @id @default(autoincrement())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conceptId        String
+  concept          Concept  @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  misconceptionTag String // Specific error/misconception diagnosed
+  attemptCount     Int      @default(1)
+  resolved         Boolean  @default(false)
+  updatedAt        DateTime @updatedAt
+
+  @@map("weak_areas")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@map("sessions")
+}
+
+model OtpVerification {
+  id        String   @id @default(uuid())
+  email     String
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("otp_verifications")
+}
+
+model Conversation {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title         String
+  quizQuestions Json? // Stores active quiz questions for this conversation
+  quizState     Json? // Stores current quiz state (currentQ, score, etc.)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  messages      Message[]
+
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         String // "user" or "ai"
+  text           String       @db.Text
+  notes          String?      @db.Text // stores notes content for that specific step
+  simulation     Json? // stores simulation JSON (title, html) for that step
+  quizQuestions  Json? // stores generated quiz questions for this specific message
+  quizState      Json? // stores quiz state for this specific message
+  createdAt      DateTime     @default(now())
+
+  @@map("messages")
+}

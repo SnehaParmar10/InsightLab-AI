@@ -1,0 +1,35 @@
+{
+  "name": "vizulogic-ai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "concurrently --names \"FRONTEND,BACKEND,AI\" --prefix-colors \"cyan,yellow,magenta\" \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:ai\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && node index.js",
+    "dev:ai": "cd \"ai backend\" && venv\\Scripts\\python -m uvicorn main:app --reload --port 8000",
+    "dev:fb": "concurrently --names \"FRONTEND,BACKEND\" --prefix-colors \"cyan,yellow\" \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harshitj183/VisuLogic-ai-WEB.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/harshitj183/VisuLogic-ai-WEB/issues"
+  },
+  "homepage": "https://github.com/harshitj183/VisuLogic-ai-WEB#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  },
+  "dependencies": {
+    "jsdom": "^29.1.1"
+  }
+}

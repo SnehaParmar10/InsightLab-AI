@@ -1,0 +1,4 @@
+{
+    "prisma.pinToPrisma6": true
+    // ssh -i /home/harshitj183/Downloads/ConceptCraftai.pem ubuntu@13.204.142.42
+}

@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.5);
+}
+
+/* Light-Theme Glassmorphism */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-panel-hover:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 0, 0, 0.06), 
+    0 0 25px 0px rgba(14, 165, 233, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Colorful Radial Background Glows */
+.color-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes float-orb-1 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(40px, -60px) scale(1.2);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.85);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes float-orb-2 {
+  0% {
+    transform: translate(0px, 0px) scale(1.1);
+  }
+  50% {
+    transform: translate(-50px, 50px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1.1);
+  }
+}
+
+@keyframes float-orb-3 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(-40px, -40px) scale(1.15);
+  }
+  66% {
+    transform: translate(50px, 30px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-orb-yellow {
+  animation: float-orb-1 16s infinite ease-in-out;
+}
+
+.animate-orb-green {
+  animation: float-orb-2 20s infinite ease-in-out;
+}
+
+.animate-orb-blue {
+  animation: float-orb-3 14s infinite ease-in-out;
+}
+
+/* Graph Paper Grid for Light Theme */
+.light-glow-grid {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+}
+
+/* CSS 3D Support */
+.perspective-3d {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.text-gradient-main {
+  background: linear-gradient(135deg, #0e8ad8 0%, #10b981 50%, #eab308 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Active 3D Hover Card */
+.hover-3d-card {
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+.hover-3d-card:hover {
+  box-shadow: 
+    0 30px 60px -15px rgba(0, 0, 0, 0.1), 
+    0 0 40px -5px rgba(16, 185, 129, 0.15);
+}
+
+.glow-card-green {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.2);
+}
+.glow-card-blue {
+  box-shadow: 0 0 25px -5px rgba(14, 165, 233, 0.2);
+}
+.glow-card-yellow {
+  box-shadow: 0 0 25px -5px rgba(234, 179, 8, 0.2);
+}
