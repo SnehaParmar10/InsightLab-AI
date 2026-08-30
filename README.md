@@ -1,4 +1,4 @@
-# ConceptCraft AI
+...# ConceptCraft AI
 
 ConceptCraft AI is an advanced AI-powered educational platform designed to parse user prompts into production-grade interactive sandboxes. It provides an immersive visual learning experience featuring dynamically generated simulations, visual notes, and targeted quizzes to accelerate the understanding of complex theoretical concepts.
 
